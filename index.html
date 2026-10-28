@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TradeTrack — Trading Journal</title>
+<style>
+:root{color-scheme:dark;--bg:#090e14;--panel:#101823;--panel2:#151f2c;--line:#253344;--text:#edf3fa;--muted:#8b9aab;--green:#48dfa0;--red:#ff7185;--blue:#80b5ff;--amber:#ffc66d}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 20% -20%,#14263a 0,transparent 45%),var(--bg);color:var(--text);font:14px/1.45 Inter,"Segoe UI",Arial,sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}.app{max-width:1440px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:22px}.brand{display:flex;align-items:center;gap:12px}.logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#143c2d;color:var(--green);font-size:23px;font-weight:900}.brand h1{margin:0;font-size:25px;letter-spacing:-.7px}.muted{color:var(--muted)}.tiny{font-size:11px}.actions{display:flex;gap:8px;flex-wrap:wrap}.btn{border:1px solid var(--line);border-radius:8px;background:var(--panel2);color:var(--text);padding:9px 12px}.btn:hover{border-color:#526d8a}.btn.primary{background:var(--green);border-color:var(--green);color:#062719;font-weight:800}.btn.danger{color:var(--red)}.pill{border:1px solid #245d46;background:#10271e;color:var(--green);border-radius:20px;padding:6px 10px;font-size:10px;font-weight:800;letter-spacing:1px}.section-title{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin:24px 0 11px}.grid{display:grid;gap:12px}.stats{grid-template-columns:repeat(6,minmax(0,1fr))}.card,.panel{background:linear-gradient(180deg,rgba(19,29,42,.98),rgba(14,22,32,.98));border:1px solid var(--line);border-radius:13px;min-width:0}.stat{padding:16px}.stat .label{font-size:11px;color:var(--muted)}.stat .value{font-size:clamp(19px,2vw,27px);font-weight:750;margin-top:10px;overflow-wrap:anywhere;letter-spacing:-.4px}.stat .note{font-size:11px;color:var(--muted);margin-top:6px}.green{color:var(--green)!important}.red{color:var(--red)!important}.amber{color:var(--amber)!important}.layout{grid-template-columns:minmax(270px,350px) minmax(0,1fr);align-items:start}.panel{padding:18px}.panel h2{font-size:16px;margin:0 0 4px}.sub{color:var(--muted);font-size:12px;margin-bottom:17px}.field{margin-bottom:12px}label{display:block;font-size:11px;color:#b9c6d5;margin-bottom:6px}input,select,textarea{width:100%;border:1px solid #2a3a4d;border-radius:8px;padding:10px 11px;background:#0b121b;color:var(--text);outline:none}input:focus,select:focus,textarea:focus{border-color:var(--blue)}textarea{resize:vertical;min-height:60px}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.form-submit{width:100%;margin-top:2px}.divider{border:0;border-top:1px solid var(--line);margin:16px 0}.riskbox{padding:11px;border:1px solid var(--line);border-radius:9px;background:#0b121b;margin-bottom:13px}.riskbox .big{font-weight:800;font-size:17px;margin-top:4px}.rightcol{min-width:0}.analytics{grid-template-columns:1.2fr 1fr;gap:12px}.chartbox{min-height:245px}.chartwrap{height:190px;position:relative;margin-top:12px}.chartwrap canvas{width:100%;height:100%;display:block}.chart-empty{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);text-align:center;pointer-events:none}.insights{display:grid;gap:8px}.insight{border:1px solid var(--line);background:#0d151f;border-radius:9px;padding:11px 12px;color:#c6d1df;font-size:12px}.insight strong{color:var(--text)}.filters{display:flex;gap:7px;flex-wrap:wrap;margin:14px 0}.filter{padding:7px 10px;border-radius:7px;border:1px solid var(--line);background:var(--panel2);color:var(--muted);font-size:12px}.filter.active{color:var(--text);border-color:#5475a1;background:#1a2b40}.tabletop{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}.tabletools{display:flex;gap:8px;flex-wrap:wrap}.tabletools input{width:180px}.tablewrap{overflow:auto;margin-top:8px}table{border-collapse:collapse;width:100%;white-space:nowrap}th{text-align:left;color:var(--muted);font-size:10px;font-weight:650;text-transform:uppercase;letter-spacing:.5px;padding:12px 10px;border-bottom:1px solid var(--line)}td{padding:13px 10px;border-bottom:1px solid #1c2938;font-size:12px}tbody tr:hover{background:#121d2a}.symbol{font-weight:800;font-size:13px}.tag{display:inline-block;border-radius:5px;padding:4px 7px;font-size:10px;font-weight:800}.long{background:#143a2b;color:var(--green)}.short{background:#40212b;color:var(--red)}.empty{text-align:center;padding:32px 14px;color:var(--muted)}.del{background:transparent;border:0;color:var(--muted);font-size:18px}.del:hover{color:var(--red)}.notice{border:1px solid #5a4425;background:#241b10;color:#f5ce8a;padding:11px 13px;border-radius:9px;font-size:12px;margin-top:12px;display:none}.foot{color:#657589;text-align:center;font-size:11px;margin:22px 0 8px;line-height:1.7}.modalback{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:20px;z-index:5}.modal{width:min(500px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:20px}.modal h2{margin-top:0}.modal .actions{justify-content:flex-end;margin-top:16px}.hidden{display:none!important}
+@media(max-width:1100px){.stats{grid-template-columns:repeat(3,minmax(0,1fr))}.layout{grid-template-columns:1fr}.analytics{grid-template-columns:1fr 1fr}}
+@media(max-width:800px){.arb-layout{grid-template-columns:1fr!important}}
+@media(max-width:650px){button{min-height:42px;touch-action:manipulation}.app{padding:14px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.analytics{grid-template-columns:1fr}.stat{padding:13px}.panel{padding:14px}.brand h1{font-size:22px}.tabletools input{width:100%}.tabletools{width:100%}.tabletools>*{flex:1}.top{align-items:flex-start}}
+
+.ai-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(230px,300px);gap:12px;align-items:start}.ai-response{min-height:150px;white-space:pre-wrap;line-height:1.65;color:#d7e2ef;background:#0b121b;border:1px solid var(--line);border-radius:10px;padding:14px}.ai-chips{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.ai-chip{border:1px solid #2b4056;background:#132132;color:#dbe8f7;border-radius:999px;padding:8px 11px;font-size:12px}.ai-chip:hover{border-color:var(--blue)}.ai-mark{color:#a7c5ff;font-weight:800}.ai-disclaimer{border-left:3px solid var(--amber);padding:9px 11px;background:#211b12;color:#d9c69e;border-radius:0 8px 8px 0;font-size:11px;margin-top:12px}
+@media(max-width:800px){.ai-layout{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><div class="logo">T</div><div><h1>TradeTrack</h1><div class="muted tiny">TRADING JOURNAL · PERFORMANCE WORKSPACE</div></div></div>
+    <div class="actions">
+      <span class="pill">LOCAL-FIRST</span>
+      <button class="btn" id="backupBtn">Резервная копия</button>
+      <button class="btn" id="importBtn">Импорт CSV</button>
+      <button class="btn" id="settingsBtn">Настройки</button>
+      <input type="file" id="importFile" accept=".csv,.json,text/csv,application/json" class="hidden">
+    </div>
+  </header>
+
+  <div id="runtimeNotice" class="notice" style="display:block">
+    Если кнопки не реагируют на нажатие, файл открыт в предпросмотре iPhone (Files/Quick Look). Открой его в полноценном браузере или размести как сайт — предпросмотр iOS может показывать HTML как статичную страницу без JavaScript.
+  </div>
+  <div class="section-title">Сводка по выбранному периоду</div>
+  <section class="grid stats">
+    <div class="card stat"><div class="label">Чистый P/L</div><div class="value" id="sPnl">$0.00</div><div class="note">После комиссий и расходов</div></div>
+    <div class="card stat"><div class="label">Win rate</div><div class="value" id="sWin">0%</div><div class="note" id="sWinNote">0 закрытых сделок</div></div>
+    <div class="card stat"><div class="label">Profit factor</div><div class="value" id="sPf">—</div><div class="note">Валовая прибыль / валовый убыток</div></div>
+    <div class="card stat"><div class="label">Expectancy</div><div class="value" id="sExp">$0.00</div><div class="note">Средний чистый результат</div></div>
+    <div class="card stat"><div class="label">Макс. просадка</div><div class="value" id="sDd">$0.00</div><div class="note">От локального пика equity</div></div>
+    <div class="card stat"><div class="label">Средний R</div><div class="value" id="sR">—</div><div class="note">Только сделки с заданным стопом</div></div>
+  </section>
+
+  <div class="section-title">Рабочая область</div>
+  <section class="grid layout">
+    <div class="panel">
+      <h2 id="formTitle">Добавить закрытую сделку</h2>
+      <div class="sub">Заполняй по фактическим данным из торговой платформы.</div>
+      <form id="tradeForm">
+        <div class="field"><label for="symbol">Инструмент *</label><input id="symbol" maxlength="30" placeholder="Например, ES, AAPL, BTCUSD" required></div>
+        <div class="two">
+          <div class="field"><label for="direction">Направление *</label><select id="direction"><option value="long">Long</option><option value="short">Short</option></select></div>
+          <div class="field"><label for="date">Дата закрытия *</label><input id="date" type="date" required></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="openAt">Дата и время открытия</label><input id="openAt" type="datetime-local"></div>
+          <div class="field"><label for="closeTime">Время закрытия</label><input id="closeTime" type="time"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="entry">Цена входа *</label><input id="entry" type="number" min="0.00000001" step="any" placeholder="100" required></div>
+          <div class="field"><label for="exitPrice">Цена выхода *</label><input id="exitPrice" type="number" min="0.00000001" step="any" placeholder="105" required></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="quantity">Количество / контрактов *</label><input id="quantity" type="number" min="0.00000001" step="any" placeholder="10" required></div>
+          <div class="field"><label for="fees">Комиссия + расходы ($)</label><input id="fees" type="number" min="0" step="any" value="0" required></div>
+        </div>
+        <div class="two">
+          <div class="field"><label for="stop">Стоп-лосс (цена, необязательно)</label><input id="stop" type="number" min="0.00000001" step="any" placeholder="95"></div>
+          <div class="field"><label for="strategy">Стратегия</label><input id="strategy" maxlength="50" placeholder="Breakout, VWAP..."></div>
+        </div>
+        <div class="field"><label for="notes">Заметка / ошибка / сетап</label><textarea id="notes" maxlength="500" placeholder="Почему вошёл? Соблюдал ли план?"></textarea></div>
+        <div class="riskbox"><div class="muted tiny">Расчёт по введённым данным</div><div class="big" id="previewPnl">$0.00</div><div class="muted tiny" id="previewRisk">Введи цены и количество для расчёта P/L и риска.</div></div>
+        <button class="btn primary form-submit" type="submit" id="submitBtn">+ Сохранить сделку</button>
+        <button class="btn hidden form-submit" type="button" id="cancelEdit">Отменить редактирование</button>
+      </form>
+      <div id="riskNotice" class="notice"></div>
+    </div>
+
+    <div class="rightcol">
+      <div class="grid analytics">
+        <div class="panel chartbox"><h2>Кривая капитала</h2><div class="sub">Накопленный чистый P/L по закрытым сделкам</div><div class="chartwrap"><canvas id="equityChart"></canvas><div id="chartEmpty" class="chart-empty">Добавь несколько закрытых сделок,<br>чтобы увидеть кривую капитала.</div></div></div>
+        <div class="panel"><h2>Разбор результатов</h2><div class="sub">Статистика выбранного периода</div><div class="insights" id="insights"></div></div>
+      </div>
+      <div class="panel" style="margin-top:12px">
+        <div class="tabletop"><div><h2>История сделок</h2><div class="sub" style="margin:4px 0 0">Фильтруй, ищи, редактируй и выгружай записи.</div></div><div class="tabletools"><input id="search" placeholder="Поиск по активу, стратегии..."><select id="period" aria-label="Период"><option value="all">Всё время</option><option value="7">Последние 7 дней</option><option value="30">Последние 30 дней</option><option value="90">Последние 90 дней</option></select></div></div>
+        <div class="filters"><button class="filter active" data-filter="all">Все</button><button class="filter" data-filter="wins">Прибыльные</button><button class="filter" data-filter="losses">Убыточные</button><button class="filter" data-filter="long">Long</button><button class="filter" data-filter="short">Short</button></div>
+        <div class="tablewrap"><table><thead><tr><th>Актив / время открытия</th><th>Направление</th><th>Вход → выход</th><th>Кол-во</th><th>Стратегия</th><th>Чистый P/L</th><th>R</th><th></th></tr></thead><tbody id="rows"></tbody></table><div id="empty" class="empty">Пока нет сделок.<br>Добавь тестовую сделку через форму слева.</div></div>
+        <div class="muted tiny" id="tableFoot" style="margin-top:10px"></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-title">Арбитражные сделки</div>
+  <section class="grid arb-layout" style="grid-template-columns:minmax(260px,350px) minmax(0,1fr);align-items:start;gap:12px">
+    <div class="panel">
+      <h2>Добавить арбитраж</h2>
+      <div class="sub">Для покупки на одной площадке и продажи на другой. Укажи суммарные комиссии обеих сторон.</div>
+      <form id="arbForm">
+        <div class="field"><label for="arbAsset">Актив *</label><input id="arbAsset" maxlength="30" placeholder="Например, BTC/USDT" required></div>
+        <div class="two"><div class="field"><label for="arbBuyVenue">Площадка покупки *</label><input id="arbBuyVenue" maxlength="50" placeholder="Биржа A" required></div><div class="field"><label for="arbSellVenue">Площадка продажи *</label><input id="arbSellVenue" maxlength="50" placeholder="Биржа B" required></div></div>
+        <div class="two"><div class="field"><label for="arbOpenAt">Дата и время открытия</label><input id="arbOpenAt" type="datetime-local"></div><div class="field"><label for="arbCloseAt">Дата и время закрытия</label><input id="arbCloseAt" type="datetime-local"></div></div>
+        <div class="two"><div class="field"><label for="arbBuyPrice">Цена покупки *</label><input id="arbBuyPrice" type="number" min="0.00000001" step="any" required placeholder="60000"></div><div class="field"><label for="arbSellPrice">Цена продажи *</label><input id="arbSellPrice" type="number" min="0.00000001" step="any" required placeholder="60200"></div></div>
+        <div class="two"><div class="field"><label for="arbQty">Количество *</label><input id="arbQty" type="number" min="0.00000001" step="any" required placeholder="0.1"></div><div class="field"><label for="arbFees">Комиссии обеих сторон</label><input id="arbFees" type="number" min="0" step="any" value="0" required></div></div>
+        <div class="two"><div class="field"><label for="arbSlippage">Проскальзывание (сумма)</label><input id="arbSlippage" type="number" min="0" step="any" value="0" required></div><div class="field"><label for="arbFunding">Funding / перенос (+получено, −уплачено)</label><input id="arbFunding" type="number" step="any" value="0" required></div></div>
+        <div class="field"><label for="arbDate">Дата записи *</label><input id="arbDate" type="date" required></div>
+        <div class="riskbox"><div class="muted tiny">Предварительная чистая прибыль</div><div class="big" id="arbPreview">$0.00</div><div class="muted tiny">(Продажа − покупка) × количество − комиссии − проскальзывание + funding</div></div>
+        <button class="btn primary form-submit" type="submit">+ Сохранить арбитраж</button>
+      </form>
+    </div>
+    <div class="panel"><div class="tabletop"><div><h2>История арбитража</h2><div class="sub" style="margin:4px 0 0">Отдельно от обычных сделок.</div></div><div class="pill" id="arbCount">0 сделок</div></div>
+      <div class="grid stats" style="grid-template-columns:repeat(2,minmax(0,1fr));margin-bottom:12px"><div class="card stat"><div class="label">Чистый результат</div><div class="value" id="arbTotal">$0.00</div></div><div class="card stat"><div class="label">Средняя сделка</div><div class="value" id="arbAverage">$0.00</div></div></div>
+      <div class="tablewrap"><table><thead><tr><th>Дата / актив</th><th>Покупка</th><th>Продажа</th><th>Кол-во</th><th>Расходы</th><th>Чистый P/L</th><th></th></tr></thead><tbody id="arbRows"></tbody></table><div id="arbEmpty" class="empty">Арбитражных сделок пока нет.</div></div>
+      <div class="notice" style="display:block;margin-top:12px">Важно: расчёт не учитывает автоматически проскальзывание, задержки перевода, funding, изменение курса валют или ограничения площадок. Внеси такие расходы вручную, чтобы оценка была ближе к реальности.</div>
+    </div>
+  </section>
+
+
+  <div class="section-title">TradeTrack AI Lite</div>
+  <section class="ai-layout">
+    <div class="panel">
+      <div class="tabletop"><div><h2>AI Trading Analyst</h2><div class="sub" style="margin:4px 0 0">Локальный помощник, который анализирует записи твоего журнала.</div></div><div class="pill">БЕЗ API · БЕСПЛАТНО</div></div>
+      <div class="ai-chips">
+        <button class="ai-chip" type="button" data-ai="summary">📊 Общая статистика</button>
+        <button class="ai-chip" type="button" data-ai="errors">🔎 Найти слабые места</button>
+        <button class="ai-chip" type="button" data-ai="week">📅 Отчёт за 7 дней</button>
+        <button class="ai-chip" type="button" data-ai="strategies">🎯 Сравнить стратегии</button>
+        <button class="ai-chip" type="button" data-ai="arb">↔ Анализ арбитража</button>
+      </div>
+      <div class="field"><label for="aiQuestion">Спроси о своих сделках</label><textarea id="aiQuestion" rows="2" placeholder="Например: почему у меня больше убытков?"></textarea></div>
+      <div class="actions"><button class="btn primary" id="aiAsk" type="button">Проанализировать</button><button class="btn" id="aiClear" type="button">Очистить ответ</button></div>
+      <div style="margin-top:14px"><div class="muted tiny" style="margin-bottom:7px">ОТЧЁТ</div><div class="ai-response" id="aiResponse" aria-live="polite">Привет! Я TradeTrack AI Lite. Нажми на один из быстрых анализов или задай вопрос. Я использую сделки, сохранённые в этом браузере.</div></div>
+      <div class="ai-disclaimer">Это аналитический помощник на правилах, а не языковая модель. Он не предсказывает рынок и не даёт гарантированных торговых сигналов. Результаты зависят от полноты записей.</div>
+    </div>
+    <aside class="panel"><h2>Что я анализирую</h2><div class="sub">Данные локально в твоём браузере</div><div class="insights" id="aiFacts"><div class="insight">Обычных сделок: <strong id="aiTradeCount">0</strong></div><div class="insight">Арбитражных записей: <strong id="aiArbCount">0</strong></div><div class="insight">Закрытый P/L: <strong id="aiPnl">$0.00</strong></div><div class="insight">Доля прибыльных: <strong id="aiWin">—</strong></div></div><div class="muted tiny" style="margin-top:12px">Совет: записывай стратегию, время открытия, комиссии и причины входа — тогда выводы будут полезнее.</div></aside>
+  </section>
+
+  <div class="foot">TradeTrack — локальный прототип. Данные хранятся в этом браузере на этом устройстве.<br>Аналитика описывает прошлые результаты и не предсказывает будущую доходность. Проверяй формулы под специфику своего инструмента.</div>
+</div>
+
+<div class="modalback" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsTitle">
+  <div class="modal"><h2 id="settingsTitle">Настройки журнала</h2><div class="sub">Лимит дневного убытка используется только для предупреждения, он не блокирует сделки и не подключён к брокеру.</div>
+    <div class="field"><label for="dailyLimit">Лимит дневного убытка ($), 0 = выключен</label><input id="dailyLimit" type="number" min="0" step="any" value="0"></div>
+    <div class="field"><label for="startingBalance">Начальный баланс для графика ($)</label><input id="startingBalance" type="number" step="any" value="0"></div>
+    <div class="muted tiny">В этой версии P/L считается в долларах и предполагает линейную зависимость от изменения цены. Для фьючерсов, FX, мультивалютных счетов и некоторых деривативов формулу нужно адаптировать под спецификацию инструмента.</div>
+    <div class="actions"><button class="btn" id="closeSettings">Отмена</button><button class="btn primary" id="saveSettings">Сохранить настройки</button></div>
+  </div>
+</div>
+
+<script>
+(() => {
+  "use strict";
+  const $ = id => document.getElementById(id);
+  const KEY = "tradetrack-pro-v2";
+  let trades = [];
+  let filter = "all";
+  let editingId = null;
+  let settings = {dailyLimit:0, startingBalance:0};
+
+  const today = () => {
+    const d = new Date();
+    return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;
+  };
+  const validTrade = t => t && typeof t.id === "string" && typeof t.symbol === "string" &&
+    ["long","short"].includes(t.direction) && typeof t.date === "string" &&
+    Number.isFinite(t.entry) && t.entry > 0 && Number.isFinite(t.exitPrice) && t.exitPrice > 0 &&
+    Number.isFinite(t.quantity) && t.quantity > 0 && Number.isFinite(t.fees) && t.fees >= 0 &&
+    (t.stop === null || t.stop === undefined || (Number.isFinite(t.stop) && t.stop > 0));
+  function load() {
+    try {
+      const raw = JSON.parse(localStorage.getItem(KEY) || "{}");
+      trades = Array.isArray(raw.trades) ? raw.trades.filter(validTrade) : [];
+      if (raw.settings && Number.isFinite(raw.settings.dailyLimit) && Number.isFinite(raw.settings.startingBalance)) settings = raw.settings;
+    } catch(e) { trades=[]; }
+  }
+  function persist() {
+    try { localStorage.setItem(KEY, JSON.stringify({trades,settings})); return true; }
+    catch(e) { alert("Не удалось сохранить данные в браузере. Сделай резервную копию и проверь свободное место."); return false; }
+  }
+  const pnl = t => (t.exitPrice-t.entry)*(t.direction==="long"?1:-1)*t.quantity-t.fees;
+  const risk = t => t.stop && t.stop > 0 ? Math.abs(t.entry-t.stop)*t.quantity : null;
+  const rMultiple = t => { const r=risk(t); return r && r>0 ? pnl(t)/r : null; };
+  const sum = (arr, fn) => arr.reduce((s,x)=>s+fn(x),0);
+  const fmt = n => (n>0?"+":n<0?"−":"")+"$"+Math.abs(n).toLocaleString("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+  const number = n => Number(n).toLocaleString("en-US",{maximumFractionDigits:6});
+  const cls = n => n>0?"green":n<0?"red":"";
+  const safe = s => String(s ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+  const sorted = arr => [...arr].sort((a,b)=>a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  function filteredTrades() {
+    const now = new Date(); now.setHours(0,0,0,0);
+    const period = $("period").value;
+    const query = $("search").value.trim().toLowerCase();
+    return trades.filter(t => {
+      if(period!=="all") { const cutoff=new Date(now); cutoff.setDate(cutoff.getDate()-Number(period)+1); if(new Date(t.date+"T00:00:00")<cutoff) return false; }
+      const p=pnl(t);
+      if(filter==="wins" && p<=0) return false;
+      if(filter==="losses" && p>=0) return false;
+      if(filter==="long" && t.direction!=="long") return false;
+      if(filter==="short" && t.direction!=="short") return false;
+      const text=[t.symbol,t.strategy||"",t.notes||"",t.direction].join(" ").toLowerCase();
+      return text.includes(query);
+    });
+  }
+  function maxDrawdown(arr) {
+    let equity=settings.startingBalance, peak=equity, max=0;
+    for(const t of sorted(arr)){equity+=pnl(t);peak=Math.max(peak,equity);max=Math.max(max,peak-equity);}
+    return max;
+  }
+  function setValue(id,text,extra="") { $(id).textContent=text; $(id).className="value "+extra; }
+  function renderStats(arr) {
+    const n=arr.length, results=arr.map(pnl), total=sum(arr,pnl);
+    const wins=results.filter(x=>x>0), losses=results.filter(x=>x<0);
+    const grossWin=sum(wins,x=>x), grossLoss=-sum(losses,x=>x);
+    const pf=grossLoss===0?(grossWin>0?"∞":"—"):(grossWin/grossLoss).toFixed(2);
+    const exp=n?total/n:0;
+    const rs=arr.map(rMultiple).filter(x=>x!==null);
+    setValue("sPnl",fmt(total),cls(total));
+    setValue("sWin",(n?wins.length/n*100:0).toFixed(1)+"%");
+    $("sWinNote").textContent=`${wins.length} прибыльных · ${losses.length} убыточных · ${n} всего`;
+    setValue("sPf",pf, grossLoss===0&&grossWin>0?"green":"");
+    setValue("sExp",fmt(exp),cls(exp));
+    setValue("sDd",fmt(maxDrawdown(arr)),maxDrawdown(arr)>0?"red":"");
+    setValue("sR",rs.length?(sum(rs,x=>x)/rs.length).toFixed(2)+"R":"—");
+  }
+  function renderInsights(arr) {
+    const box=$("insights"), n=arr.length, wins=arr.filter(t=>pnl(t)>0), losses=arr.filter(t=>pnl(t)<0);
+    const avgWin=wins.length?sum(wins,pnl)/wins.length:0, avgLoss=losses.length?sum(losses,pnl)/losses.length:0;
+    const byStrategy={};
+    arr.forEach(t=>{const k=t.strategy?.trim()||"Без стратегии";(byStrategy[k]??=[]).push(t);});
+    const strategies=Object.entries(byStrategy).map(([name,ts])=>({name,total:sum(ts,pnl),n:ts.length})).sort((a,b)=>b.total-a.total);
+    const best=arr.slice().sort((a,b)=>pnl(b)-pnl(a))[0];
+    const worst=arr.slice().sort((a,b)=>pnl(a)-pnl(b))[0];
+    const dayTotals={}; arr.forEach(t=>dayTotals[t.date]=(dayTotals[t.date]||0)+pnl(t));
+    const badDay=Object.entries(dayTotals).sort((a,b)=>a[1]-b[1])[0];
+    const insights=[];
+    insights.push(`<strong>Средний выигрыш:</strong> <span class="green">${fmt(avgWin)}</span> · <strong>средний убыток:</strong> <span class="red">${fmt(avgLoss)}</span>`);
+    if(best) insights.push(`<strong>Лучшая сделка:</strong> ${safe(best.symbol)} · <span class="green">${fmt(pnl(best))}</span>`);
+    if(worst && pnl(worst)<0) insights.push(`<strong>Худшая сделка:</strong> ${safe(worst.symbol)} · <span class="red">${fmt(pnl(worst))}</span>`);
+    if(strategies.length) { const s=strategies[0]; insights.push(`<strong>Лучшая стратегия по суммарному P/L:</strong> ${safe(s.name)} · <span class="${cls(s.total)}">${fmt(s.total)}</span> (${s.n} сделок)`); }
+    if(badDay && badDay[1]<0) insights.push(`<strong>Самый убыточный день:</strong> ${safe(badDay[0])} · <span class="red">${fmt(badDay[1])}</span>`);
+    if(n<5) insights.push(`<strong>Пока мало данных.</strong> Сделай хотя бы 20–30 записей перед выводами о стратегии. Это не гарантирует статистическую значимость, но поможет увидеть первые закономерности.`);
+    if(!n) insights.push("Добавь сделки, чтобы получить разбор результатов.");
+    box.innerHTML=insights.map(x=>`<div class="insight">${x}</div>`).join("");
+  }
+  function renderChart(arr) {
+    const canvas=$("equityChart"), ctx=canvas.getContext("2d"), wrap=canvas.parentElement;
+    const rect=wrap.getBoundingClientRect(), dpr=window.devicePixelRatio||1;
+    canvas.width=Math.max(1,Math.floor(rect.width*dpr)); canvas.height=Math.max(1,Math.floor(rect.height*dpr));
+    ctx.scale(dpr,dpr); const w=rect.width,h=rect.height; ctx.clearRect(0,0,w,h);
+    const ts=sorted(arr); $("chartEmpty").style.display=ts.length?"none":"grid"; if(!ts.length)return;
+    let equity=settings.startingBalance; const values=[equity]; ts.forEach(t=>{equity+=pnl(t);values.push(equity);});
+    let min=Math.min(...values), max=Math.max(...values); if(min===max){min-=1;max+=1;}
+    const pad={l:48,r:12,t:12,b:25}, cw=w-pad.l-pad.r,ch=h-pad.t-pad.b;
+    const y=v=>pad.t+(max-v)/(max-min)*ch, x=i=>pad.l+i/(values.length-1)*cw;
+    ctx.font="10px Segoe UI"; ctx.strokeStyle="#243244";ctx.fillStyle="#8b9aab";ctx.lineWidth=1;
+    for(let i=0;i<4;i++){const v=min+(max-min)*i/3, yy=y(v);ctx.beginPath();ctx.moveTo(pad.l,yy);ctx.lineTo(w-pad.r,yy);ctx.stroke();ctx.fillText((v<0?"−$":"$")+Math.abs(v).toFixed(0),2,yy+3);}
+    const last=values[values.length-1], color=last>=settings.startingBalance?"#48dfa0":"#ff7185";
+    ctx.beginPath();values.forEach((v,i)=>i?ctx.lineTo(x(i),y(v)):ctx.moveTo(x(i),y(v)));ctx.strokeStyle=color;ctx.lineWidth=2.5;ctx.stroke();
+    ctx.lineTo(x(values.length-1),h-pad.b);ctx.lineTo(x(0),h-pad.b);ctx.closePath();ctx.fillStyle=last>=settings.startingBalance?"rgba(72,223,160,.09)":"rgba(255,113,133,.09)";ctx.fill();
+    ctx.fillStyle="#8b9aab";ctx.fillText(ts[0].date,pad.l,h-5);const end=ts[ts.length-1].date;ctx.fillText(end,Math.max(pad.l,w-pad.r-75),h-5);
+  }
+  function renderTable(arr) {
+    const rows=$("rows");
+    const view=[...arr].sort((a,b)=>b.date.localeCompare(a.date)||b.id.localeCompare(a.id));
+    rows.innerHTML=view.map(t=>{const p=pnl(t),r=rMultiple(t);return `<tr>
+      <td><div class="symbol">${safe(t.symbol)}</div><div class="muted tiny">Закрытие: ${safe(t.date)}${t.closeTime?" · "+safe(t.closeTime):""}</div>${t.openAt?`<div class="muted tiny">Открытие: ${safe(t.openAt.replace("T"," "))}</div>`:""}${t.notes?`<div class="muted tiny" title="${safe(t.notes)}">${safe(t.notes.slice(0,36))}${t.notes.length>36?"…":""}</div>`:""}</td>
+      <td><span class="tag ${t.direction}">${t.direction.toUpperCase()}</span></td>
+      <td>${number(t.entry)} → ${number(t.exitPrice)}</td><td>${number(t.quantity)}</td><td>${safe(t.strategy||"—")}</td>
+      <td class="${cls(p)}"><strong>${fmt(p)}</strong></td><td>${r===null?"—":r.toFixed(2)+"R"}</td>
+      <td><button class="del" data-edit="${safe(t.id)}" title="Редактировать" aria-label="Редактировать">✎</button> <button class="del" data-del="${safe(t.id)}" title="Удалить" aria-label="Удалить">×</button></td></tr>`;}).join("");
+    $("empty").style.display=view.length?"none":"block";
+    $("tableFoot").textContent=`Показано ${view.length} из ${trades.length} сделок.`;
+  }
+  function renderDailyRisk() {
+    const el=$("riskNotice"); if(!settings.dailyLimit){el.style.display="none";return;}
+    const todayPnl=sum(trades.filter(t=>t.date===today()),pnl);
+    if(todayPnl<=-settings.dailyLimit){el.style.display="block";el.textContent=`Внимание: результат за сегодня ${fmt(todayPnl)} достиг или превысил лимит убытка ${fmt(-settings.dailyLimit)}. Это только предупреждение журнала.`;}
+    else {el.style.display="block";el.textContent=`Результат сегодня: ${fmt(todayPnl)}. Лимит предупреждения: ${fmt(-settings.dailyLimit)}.`;}
+  }
+  function render(){const arr=filteredTrades();renderStats(arr);renderInsights(arr);renderChart(arr);renderTable(arr);renderDailyRisk();}
+  function preview(){
+    const entry=Number($("entry").value), exit=Number($("exitPrice").value), qty=Number($("quantity").value), fees=Number($("fees").value||0), stop=Number($("stop").value);
+    if(entry>0&&exit>0&&qty>0&&Number.isFinite(fees)&&fees>=0){
+      const p=(exit-entry)*($("direction").value==="long"?1:-1)*qty-fees;
+      $("previewPnl").textContent=fmt(p);$("previewPnl").className="big "+cls(p);
+      const riskVal=stop>0?Math.abs(entry-stop)*qty:null;
+      $("previewRisk").textContent=riskVal?`Плановый ценовой риск ≈ ${fmt(riskVal)} до комиссии; результат ${riskVal? (p/riskVal).toFixed(2)+"R":"—"}.`:"Стоп не указан — R-множитель не рассчитывается.";
+    }else{$("previewPnl").textContent="$0.00";$("previewPnl").className="big";$("previewRisk").textContent="Введи цены и количество для расчёта P/L и риска.";}
+  }
+  ["entry","exitPrice","quantity","fees","stop","direction"].forEach(id=>$(id).addEventListener("input",preview));
+  $("tradeForm").addEventListener("submit",e=>{
+    e.preventDefault();
+    const entry=Number($("entry").value),exitPrice=Number($("exitPrice").value),quantity=Number($("quantity").value),fees=Number($("fees").value),stop=$("stop").value===""?null:Number($("stop").value);
+    const symbol=$("symbol").value.trim().toUpperCase(),date=$("date").value;
+    if(!symbol||!date||!(entry>0)||!(exitPrice>0)||!(quantity>0)||!Number.isFinite(fees)||fees<0||(stop!==null&&!(stop>0))){alert("Проверь поля: цены и количество должны быть больше нуля, комиссия — неотрицательной.");return;}
+    const t={id:editingId||((crypto.randomUUID&&crypto.randomUUID())||String(Date.now()+Math.random())),symbol,direction:$("direction").value,date,openAt:$("openAt").value,closeTime:$("closeTime").value,entry,exitPrice,quantity,fees,stop,strategy:$("strategy").value.trim(),notes:$("notes").value.trim()};
+    const old=trades;trades=editingId?trades.map(x=>x.id===editingId?t:x):[...trades,t];
+    if(!persist()){trades=old;return;}resetForm();render();
+  });
+  function resetForm(){editingId=null;$("tradeForm").reset();$("date").value=today();$("openAt").value="";$("closeTime").value="";$("fees").value="0";$("formTitle").textContent="Добавить закрытую сделку";$("submitBtn").textContent="+ Сохранить сделку";$("cancelEdit").classList.add("hidden");preview();}
+  $("cancelEdit").addEventListener("click",resetForm);
+  $("rows").addEventListener("click",e=>{
+    const del=e.target.closest("[data-del]"), edit=e.target.closest("[data-edit]");
+    if(del){const t=trades.find(x=>x.id===del.dataset.del);if(!t||!confirm(`Удалить сделку ${t.symbol}?`))return;const old=trades;trades=trades.filter(x=>x.id!==t.id);if(!persist())trades=old;render();}
+    if(edit){const t=trades.find(x=>x.id===edit.dataset.edit);if(!t)return;editingId=t.id;
+      ["symbol","direction","date","openAt","closeTime","entry","exitPrice","quantity","fees","strategy","notes"].forEach(k=>$(k).value=t[k]??"");
+      $("stop").value=t.stop??"";$("formTitle").textContent="Редактировать сделку";$("submitBtn").textContent="Сохранить изменения";$("cancelEdit").classList.remove("hidden");preview();window.scrollTo({top:0,behavior:"smooth"});}
+  });
+  document.querySelector(".filters").addEventListener("click",e=>{const b=e.target.closest("[data-filter]");if(!b)return;filter=b.dataset.filter;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));render();});
+  $("period").addEventListener("change",render);$("search").addEventListener("input",render);
+  function openSettings(){
+    $("dailyLimit").value=settings.dailyLimit;
+    $("startingBalance").value=settings.startingBalance;
+    $("settingsModal").style.display="flex";
+    $("closeSettings").focus({preventScroll:true});
+  }
+  function closeSettings(){
+    $("settingsModal").style.display="none";
+    $("settingsBtn").focus({preventScroll:true});
+  }
+  $("settingsBtn").addEventListener("click",openSettings);
+  $("closeSettings").addEventListener("click",closeSettings);
+  $("settingsModal").addEventListener("click",e=>{if(e.target===$("settingsModal"))closeSettings();});
+  $("settingsModal").querySelector(".modal").addEventListener("click",e=>e.stopPropagation());
+  document.addEventListener("keydown",e=>{if(e.key==="Escape" && $("settingsModal").style.display==="flex")closeSettings();});
+  $("saveSettings").addEventListener("click",()=>{const dailyLimit=Number($("dailyLimit").value),startingBalance=Number($("startingBalance").value);if(!Number.isFinite(dailyLimit)||dailyLimit<0||!Number.isFinite(startingBalance)){alert("Проверь значения настроек.");return;}const old=settings;settings={dailyLimit,startingBalance};if(!persist())settings=old;$("settingsModal").style.display="none";render();});
+  function download(name,blob){const url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  $("backupBtn").addEventListener("click",()=>download("tradetrack-backup.json",new Blob([JSON.stringify({app:"TradeTrack",version:2,exportedAt:new Date().toISOString(),trades,settings},null,2)],{type:"application/json"})));
+  $("importBtn").addEventListener("click",()=>$("importFile").click());
+  $("importFile").addEventListener("change",async e=>{
+    const file=e.target.files[0];if(!file)return;
+    try{
+      const text=await file.text();let incoming=[];let importedSettings=null;
+      if(file.name.toLowerCase().endsWith(".json")){
+        const obj=JSON.parse(text);incoming=Array.isArray(obj)?obj:(Array.isArray(obj.trades)?obj.trades:[]);
+        if(obj.settings&&Number.isFinite(obj.settings.dailyLimit)&&obj.settings.dailyLimit>=0&&Number.isFinite(obj.settings.startingBalance))importedSettings=obj.settings;
+      }else{
+        const lines=text.replace(/^\uFEFF/,"").split(/\r?\n/).filter(x=>x.trim());
+        const parseLine=line=>{const out=[];let cur="",quoted=false;for(let i=0;i<line.length;i++){const c=line[i];if(c==='"'&&quoted&&line[i+1]==='"'){cur+='"';i++;}else if(c==='"')quoted=!quoted;else if(c===","&&!quoted){out.push(cur);cur="";}else cur+=c;}out.push(cur);return out;};
+        const head=parseLine(lines.shift()).map(x=>x.trim().toLowerCase());
+        const idx=(...names)=>head.findIndex(h=>names.includes(h));
+        const get=(r,...names)=>{const i=idx(...names);return i<0?"":r[i];};
+        incoming=lines.map(line=>{const r=parseLine(line),dir=String(get(r,"direction","side")).toLowerCase();return{
+          id:(crypto.randomUUID&&crypto.randomUUID())||String(Date.now()+Math.random()),
+          date:get(r,"date","closed at","closed_at"),openAt:get(r,"open at","open_at","entry time","entry_time","opened at","opened_at"),closeTime:get(r,"close time","close_time","exit time","exit_time"),symbol:get(r,"symbol","ticker","instrument").toUpperCase(),
+          direction:["short","sell"].includes(dir)?"short":"long",
+          entry:Number(get(r,"entry","entry price","entry_price")),exitPrice:Number(get(r,"exit","exit price","exit_price")),
+          quantity:Number(get(r,"quantity","qty","size")),fees:Number(get(r,"fees","commission","costs")||0),
+          stop:null,strategy:get(r,"strategy","setup"),notes:get(r,"notes","comment")
+        };});
+      }
+      incoming=incoming.filter(validTrade);
+      if(!incoming.length)throw new Error("Не найдено корректных сделок. Проверь формат и заголовки CSV.");
+      const old=trades,oldSettings=settings;const seen=new Set(trades.map(t=>t.id));
+      const unique=incoming.map(t=>({...t,id:seen.has(t.id)?((crypto.randomUUID&&crypto.randomUUID())||String(Date.now()+Math.random())):t.id}));
+      trades=[...trades,...unique];
+      if(importedSettings)settings=importedSettings;
+      if(!persist()){trades=old;settings=oldSettings;return;}
+      alert(`Импортировано сделок: ${unique.length}. Проверь несколько строк и расчёты.`);
+      render();
+    }catch(err){alert("Не удалось импортировать файл: "+err.message);}
+    finally{e.target.value="";}
+  });
+
+  // Separate cross-platform arbitrage journal. Stored locally in this browser.
+  const ARB_KEY = "tradetrack-arbitrage-v1";
+  let arbitrages = [];
+  const arbPnl = a => (a.sellPrice-a.buyPrice)*a.quantity-(a.fees||0)-(a.slippage||0)+(a.funding||0);
+  const validArb = a => a && typeof a.id === "string" && typeof a.asset === "string" && typeof a.buyVenue === "string" && typeof a.sellVenue === "string" && typeof a.date === "string" && [a.buyPrice,a.sellPrice,a.quantity,a.fees].every(Number.isFinite) && a.buyPrice>0 && a.sellPrice>0 && a.quantity>0 && a.fees>=0;
+  function saveArbs(){try{localStorage.setItem(ARB_KEY,JSON.stringify(arbitrages));return true;}catch(e){alert("Не удалось сохранить арбитражные сделки в этом браузере.");return false;}}
+  function renderArbs(){
+    const rows=$("arbRows");
+    const sortedArbs=[...arbitrages].sort((a,b)=>b.date.localeCompare(a.date));
+    rows.innerHTML=sortedArbs.map(a=>{const p=arbPnl(a);return `<tr><td><div class="symbol">${safe(a.asset)}</div><div class="muted tiny">${safe(a.openAt ? ("Открытие: "+a.openAt.replace("T"," ")) : a.date)}</div><div class="muted tiny">${safe(a.closeAt ? ("Закрытие: "+a.closeAt.replace("T"," ")) : "Время закрытия не указано")}</div></td><td>${safe(a.buyVenue)}<div class="muted tiny">${number(a.buyPrice)}</div></td><td>${safe(a.sellVenue)}<div class="muted tiny">${number(a.sellPrice)}</div></td><td>${number(a.quantity)}</td><td>${fmt((a.fees||0)+(a.slippage||0))}<div class="muted tiny">комиссии + проскальзывание</div>${a.funding?`<div class="muted tiny">funding: ${fmt(a.funding)}</div>`:""}</td><td class="${cls(p)}"><strong>${fmt(p)}</strong></td><td><button class="del" data-arb-del="${safe(a.id)}" title="Удалить арбитраж" aria-label="Удалить арбитраж">×</button></td></tr>`;}).join("");
+    $("arbEmpty").style.display=sortedArbs.length?"none":"block";
+    const total=sum(arbitrages,arbPnl);$("arbTotal").textContent=fmt(total);$("arbTotal").className="value "+cls(total);
+    $("arbAverage").textContent=fmt(arbitrages.length?total/arbitrages.length:0);$("arbCount").textContent=`${arbitrages.length} ${arbitrages.length===1?"сделка":arbitrages.length>1&&arbitrages.length<5?"сделки":"сделок"}`;
+  }
+  function previewArb(){const b=Number($("arbBuyPrice").value),s=Number($("arbSellPrice").value),q=Number($("arbQty").value),f=Number($("arbFees").value||0),sl=Number($("arbSlippage").value||0),fund=Number($("arbFunding").value||0);const valid=b>0&&s>0&&q>0&&f>=0&&sl>=0;const p=valid?(s-b)*q-f-sl+fund:0;$("arbPreview").textContent=fmt(p);$("arbPreview").className="big "+cls(p);}
+  $("arbDate").value=today();["arbBuyPrice","arbSellPrice","arbQty","arbFees","arbSlippage","arbFunding"].forEach(id=>$(id).addEventListener("input",previewArb));
+  $("arbForm").addEventListener("submit",e=>{e.preventDefault();const a={id:(crypto.randomUUID&&crypto.randomUUID())||String(Date.now()+Math.random()),asset:$("arbAsset").value.trim().toUpperCase(),buyVenue:$("arbBuyVenue").value.trim(),sellVenue:$("arbSellVenue").value.trim(),buyPrice:Number($("arbBuyPrice").value),sellPrice:Number($("arbSellPrice").value),quantity:Number($("arbQty").value),fees:Number($("arbFees").value),slippage:Number($("arbSlippage").value||0),funding:Number($("arbFunding").value||0),openAt:$("arbOpenAt").value||"",closeAt:$("arbCloseAt").value||"",date:$("arbDate").value};if(!validArb(a)){alert("Проверь цены, количество и расходы.");return;}arbitrages.push(a);if(!saveArbs()){arbitrages.pop();return;}$("arbForm").reset();$("arbFees").value="0";$("arbSlippage").value="0";$("arbFunding").value="0";$("arbDate").value=today();previewArb();renderArbs();});
+  $("arbRows").addEventListener("click",e=>{const b=e.target.closest("[data-arb-del]");if(!b)return;const a=arbitrages.find(x=>x.id===b.dataset.arbDel);if(!a||!confirm(`Удалить арбитраж ${a.asset}?`))return;const old=arbitrages;arbitrages=arbitrages.filter(x=>x.id!==a.id);if(!saveArbs())arbitrages=old;renderArbs();});
+  try{const rawArbs=JSON.parse(localStorage.getItem(ARB_KEY)||"[]");arbitrages=Array.isArray(rawArbs)?rawArbs.filter(validArb):[];}catch(e){arbitrages=[];}
+
+
+  // TradeTrack AI Lite: deterministic, local journal analysis (no external AI/API).
+  function aiStats(arr){
+    const wins=arr.filter(t=>pnl(t)>0),losses=arr.filter(t=>pnl(t)<0),grossWin=sum(wins,pnl),grossLoss=Math.abs(sum(losses,pnl)),net=sum(arr,pnl);
+    return {count:arr.length,wins:wins.length,losses:losses.length,net,grossWin,grossLoss,winRate:arr.length?wins.length/arr.length*100:0,avg:arr.length?net/arr.length:0,pf:grossLoss?grossWin/grossLoss:null};
+  }
+  function aiMoney(n){return (n>0?'+':n<0?'−':'')+'$'+Math.abs(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+  function aiGrouped(arr,keyFn){
+    const groups={}; arr.forEach(t=>{const k=keyFn(t)||'Не указано';(groups[k] ||= []).push(t);});
+    return Object.entries(groups).map(([name,items])=>({name,items,net:sum(items,pnl),count:items.length})).sort((a,b)=>b.net-a.net);
+  }
+  function aiRun(mode,question=''){
+    const out=$('aiResponse'); const all=[...trades]; const arbTotal=sum(arbitrages,arbPnl);
+    const stats=aiStats(all); const now=new Date(); now.setHours(0,0,0,0); const cutoff=new Date(now);cutoff.setDate(cutoff.getDate()-6);
+    const week=all.filter(t=>{const d=new Date(t.date+'T00:00:00');return !Number.isNaN(d.getTime())&&d>=cutoff&&d<=now;});
+    let lines=[];
+    const q=String(question||'').toLowerCase();
+    if(mode==='arb'||/арбитраж|funding|базис/.test(q)){
+      lines.push('АНАЛИЗ АРБИТРАЖА','');
+      if(!arbitrages.length) lines.push('Пока нет арбитражных записей. Добавь хотя бы одну сделку, чтобы я мог посчитать результат.');
+      else {const wins=arbitrages.filter(a=>arbPnl(a)>0).length;lines.push(`Записей: ${arbitrages.length}`,`Суммарный расчётный результат: ${aiMoney(arbTotal)}`,`Положительный результат: ${wins} из ${arbitrages.length}`,`Средний результат: ${aiMoney(arbTotal/arbitrages.length)}`,'','Проверь, что комиссии обеих сторон, проскальзывание и funding введены верно. Для MOEX вместо funding бессрочных контрактов обычно важнее базис, экспирация и спецификация контракта.');}
+    } else if(mode==='week'||/недел|7 дней|за неделю/.test(q)){
+      const st=aiStats(week);lines.push('ОТЧЁТ ЗА ПОСЛЕДНИЕ 7 ДНЕЙ','',`Сделок: ${st.count}`,`Чистый результат: ${aiMoney(st.net)}`,`Прибыльных: ${st.wins}`,`Убыточных: ${st.losses}`,`Win rate: ${st.count?st.winRate.toFixed(1)+'%':'—'}`,`Средний результат: ${aiMoney(st.avg)}`);if(!st.count)lines.push('За последние 7 календарных дней нет сделок с датой в журнале.');
+    } else if(mode==='strategies'||/стратег|сетап/.test(q)){
+      const groups=aiGrouped(all,t=>t.strategy&&t.strategy.trim());lines.push('СРАВНЕНИЕ СТРАТЕГИЙ','');
+      if(!all.length)lines.push('Пока нет сделок для сравнения.');else if(!groups.some(g=>g.name!=='Не указано'))lines.push('У сделок не заполнено поле «Стратегия». Добавь стратегии в журнал, и сравнение станет доступно.');else groups.filter(g=>g.name!=='Не указано').slice(0,8).forEach(g=>{const st=aiStats(g.items);lines.push(`${g.name}: ${aiMoney(g.net)} · ${g.count} сделок · win rate ${st.winRate.toFixed(1)}%`);});
+    } else if(mode==='errors'||/ошиб|теря|убыт|слаб|проблем/.test(q)){
+      lines.push('ПОИСК СЛАБЫХ МЕСТ','');if(!all.length)lines.push('Пока нет сделок. Добавь записи с фактическими результатами.');else{
+        const losses=all.filter(t=>pnl(t)<0),bySymbol=aiGrouped(all,t=>t.symbol).filter(g=>g.count>=2),byHour={};
+        all.forEach(t=>{if(t.openAt){const h=String(t.openAt).split('T')[1]?.slice(0,2);if(h&&/^\d\d$/.test(h))(byHour[h] ||= []).push(t);}});
+        lines.push(`Всего сделок: ${all.length}; убыточных: ${losses.length} (${(losses.length/all.length*100).toFixed(1)}%).`);
+        if(losses.length)lines.push(`Суммарный результат убыточных сделок: ${aiMoney(sum(losses,pnl))}.`);
+        const worst=bySymbol.filter(g=>g.net<0).sort((a,b)=>a.net-b.net)[0];if(worst)lines.push(`Актив, который стоит проверить: ${worst.name} (${aiMoney(worst.net)} по ${worst.count} сделкам). Это наблюдение, не доказательство причины.`);
+        const hours=Object.entries(byHour).map(([hour,items])=>({hour,net:sum(items,pnl),count:items.length})).filter(x=>x.count>=2).sort((a,b)=>a.net-b.net);if(hours.length)lines.push(`Среди часов открытия самый слабый в выборке: ${hours[0].hour}:00 (${aiMoney(hours[0].net)}, ${hours[0].count} сделок).`);
+        lines.push('Проверь качество входа, размер позиции, стоп-лосс и комиссии. По одному журналу нельзя уверенно установить причинно-следственную связь.');}
+    } else {
+      lines.push('СВОДКА ПО ЖУРНАЛУ','');
+      if(!all.length)lines.push('Пока нет обычных сделок. Добавь несколько закрытых сделок — тогда я смогу анализировать реальные результаты.');
+      else {lines.push(`Закрытых сделок: ${stats.count}`,`Чистый P/L: ${aiMoney(stats.net)}`,`Win rate: ${stats.winRate.toFixed(1)}% (${stats.wins} прибыльных / ${stats.losses} убыточных)`,`Средний результат сделки: ${aiMoney(stats.avg)}`,`Profit factor: ${stats.pf===null?'не рассчитывается (нет валовых убытков)':stats.pf.toFixed(2)}`,`Арбитражных записей: ${arbitrages.length}; результат по ним: ${aiMoney(arbTotal)}`,'');
+        const strategies=aiGrouped(all,t=>t.strategy&&t.strategy.trim()).filter(g=>g.name!=='Не указано');if(strategies.length){const best=strategies[0],worst=[...strategies].sort((a,b)=>a.net-b.net)[0];lines.push(`Лучшая по суммарному P/L указанная стратегия: ${best.name} (${aiMoney(best.net)}).`);if(worst.name!==best.name)lines.push(`Самая слабая по суммарному P/L: ${worst.name} (${aiMoney(worst.net)}).`);}
+        lines.push('');lines.push('Важно: win rate сам по себе не определяет прибыльность. Сравнивай размер средних выигрышей и убытков, комиссии и риск.');}
+      if(question)lines.push('','Вопрос: '+question,'Я могу ответить на основе чисел в журнале, но эта версия не использует языковую модель. Выбери быстрый анализ выше для более точного отчёта.');
+    }
+    out.textContent=lines.join('\n');
+  }
+  function refreshAIFacts(){const st=aiStats(trades);$('aiTradeCount').textContent=String(trades.length);$('aiArbCount').textContent=String(arbitrages.length);$('aiPnl').textContent=aiMoney(st.net);$('aiPnl').className=cls(st.net);$('aiWin').textContent=trades.length?st.winRate.toFixed(1)+'%':'—';}
+  document.querySelectorAll('[data-ai]').forEach(btn=>btn.addEventListener('click',()=>{aiRun(btn.dataset.ai);refreshAIFacts();}));
+  $('aiAsk').addEventListener('click',()=>{const q=$('aiQuestion').value.trim();aiRun('question',q);refreshAIFacts();});
+  $('aiClear').addEventListener('click',()=>{$('aiQuestion').value='';$('aiResponse').textContent='Ответ очищен. Выбери быстрый анализ или задай вопрос.';});
+
+  // Demo data are deliberately not inserted: the journal starts clean.
+  load();$("date").value=today();render();preview();renderArbs();previewArb();refreshAIFacts();
+  window.addEventListener("resize",()=>renderChart(filteredTrades()));
+})();
+</script>
+</body>
+</html>
